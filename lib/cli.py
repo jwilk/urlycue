@@ -26,6 +26,7 @@ import argparse
 import asyncio
 import io
 import re
+import ssl
 import sys
 import types
 
@@ -57,6 +58,8 @@ async def check_url(url):
                 if status == 200:
                     status = None
     except aiohttp.errors.ClientOSError as exc:
+        status = exc
+    except ssl.CertificateError as exc:
         status = exc
     _url_cache[url] = status
     return status
