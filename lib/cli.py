@@ -66,7 +66,7 @@ async def check_url(url):
 
 def extract_urls(s):
     return re.compile(
-        r'''https?://[^\s\\"'>)\]]+'''  # FIXME: this is very simplistic
+        r'''https?://[^\s\\"'<>)\]}]+'''  # FIXME: this is very simplistic
     ).findall(s)
 
 async def process_file(options, file):
