@@ -23,12 +23,13 @@ the command-line interface
 '''
 
 import argparse
-import functools
+import asyncio
 import io
 import re
 import sys
-import urllib.request
+import types
 
+import aiohttp
 import werkzeug.urls
 
 from lib.io import (
@@ -39,39 +40,71 @@ from lib.version import __version__
 
 user_agent = 'urlycue (https://github.com/jwilk/urlycue)'
 http_headers = {'User-Agent': user_agent}
+n_workers = 8
 
-@functools.lru_cache(maxsize=None)
-def check_url(url):
+_url_cache = {}
+
+async def check_url(url):
     url = werkzeug.urls.iri_to_uri(url)
-    request = urllib.request.Request(url, headers=http_headers, method='HEAD')
     try:
-        with urllib.request.urlopen(request):
-            pass
-    except urllib.error.URLError as exc:
-        return exc
+        return _url_cache[url]
+    except KeyError:
+        pass
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.head(url) as response:
+                status = response.status
+                if status == 200:
+                    status = None
+    except aiohttp.errors.ClientOSError as exc:
+        status = exc
+    _url_cache[url] = status
+    return status
 
 def extract_urls(s):
     return re.compile(
         r'''https?://[^\s\\"'>)\]]+'''  # FIXME: this is very simplistic
     ).findall(s)
 
-def process_file(options, file):
+async def process_file(options, file):
     for n, line in enumerate(file, 1):
         for url in extract_urls(line):
-            header = '{path}:{n}:'.format(path=file.name, n=n)
-            if options.verbose:
-                print(header, end=' ')
-                if sys.stdout.line_buffering:
-                    sys.stdout.flush()
-            status = check_url(url)
+            status = await check_url(url)
             if status is None:
                 if options.verbose:
                     status = 'OK'
                 else:
                     continue
-            if not options.verbose:
-                print(header, end=' ')
-            print('[{status}] {url}'.format(status=status, url=url))
+            print('{path}:{n}: [{status}] {url}'.format(path=file.name, n=n, status=status, url=url))
+
+async def process_path(options, path):
+    encoding = options.encoding
+    file = open_file(path, encoding=encoding, errors='replace')
+    with file:
+        return await process_file(options, file)
+
+async def process_queue(context):
+    while True:
+        url = await context.queue.get()
+        if url is None:
+            return
+        await process_path(context.options, url)
+
+async def queue_files(context, paths):
+    for path in paths:
+        await context.queue.put(path)
+    queue = context.queue
+    for i in range(n_workers):
+        await queue.put(None)
+
+def process_files(options, paths):
+    context = types.SimpleNamespace()
+    context.options = options
+    context.queue = asyncio.Queue()
+    tasks = [queue_files(context, paths)]
+    tasks += [process_queue(context) for i in range(n_workers)]
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(asyncio.gather(*tasks))
 
 class VersionAction(argparse.Action):
     '''
@@ -101,13 +134,12 @@ def main():
     ap.add_argument('files', metavar='FILE', nargs='*', default=['-'],
         help='file to check (default: stdin)')
     options = ap.parse_args()
-    encoding = get_encoding()
+    options.encoding = encoding = get_encoding()
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding, line_buffering=sys.stdout.line_buffering)
     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding, line_buffering=sys.stderr.line_buffering)
-    for path in options.files:
-        file = open_file(path, encoding=encoding, errors='replace')
-        with file:
-            process_file(options, file)
+    paths = options.files
+    del options.files
+    process_files(options, paths)
 
 __all__ = ['main']
 
