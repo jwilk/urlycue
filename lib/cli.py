@@ -69,7 +69,10 @@ def extract_urls(s):
 async def process_file(options, file):
     for n, line in enumerate(file, 1):
         for url in extract_urls(line):
-            status = await check_url(url)
+            if options.dry_run:
+                status = None
+            else:
+                status = await check_url(url)
             if status is None:
                 if options.verbose:
                     status = 'OK'
@@ -130,6 +133,7 @@ def main():
     '''
     ap = argparse.ArgumentParser(description='URL checker')
     ap.add_argument('--version', action=VersionAction)
+    ap.add_argument('--dry-run', action='store_true', help="don't do any connections")
     ap.add_argument('--verbose', action='store_true', help='print also URLs without issues')
     ap.add_argument('files', metavar='FILE', nargs='*', default=['-'],
         help='file to check (default: stdin)')
