@@ -60,8 +60,10 @@ async def process_file(options, file):
             if isinstance(status, http.HTTPStatus):
                 if (status == http.HTTPStatus.OK) and (not options.verbose):
                     continue
-                status = '{s} {s.phrase}'.format(s=status)
-            print('{path}:{n}: [{status}] {url}'.format(path=file.name, n=n, status=status, url=url))
+                str_status = '{s} {s.phrase}'.format(s=status)
+            else:
+                str_status = str(status) or repr(status)
+            print('{path}:{n}: [{status}] {url}'.format(path=file.name, n=n, status=str_status, url=url))
 
 async def process_path(options, path):
     '''
