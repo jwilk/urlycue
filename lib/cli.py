@@ -24,6 +24,7 @@ the command-line interface
 
 import argparse
 import asyncio
+import http
 import io
 import re
 import ssl
@@ -55,8 +56,10 @@ async def check_url(url):
         async with aiohttp.ClientSession(headers=http_headers) as session:
             async with session.head(url) as response:
                 status = response.status
-                if status == 200:
-                    status = None
+                try:
+                    status = http.HTTPStatus(status)
+                except ValueError as exc:
+                    status = exc
     except aiohttp.errors.ClientOSError as exc:
         rexc = exc
         while rexc is not None:
@@ -78,14 +81,13 @@ async def process_file(options, file):
     for n, line in enumerate(file, 1):
         for url in extract_urls(line):
             if options.dry_run:
-                status = None
+                status = http.HTTPStatus.OK
             else:
                 status = await check_url(url)
-            if status is None:
-                if options.verbose:
-                    status = 'OK'
-                else:
+            if isinstance(status, http.HTTPStatus):
+                if (status == http.HTTPStatus.OK) and (not options.verbose):
                     continue
+                status = '{s} {s.phrase}'.format(s=status)
             print('{path}:{n}: [{status}] {url}'.format(path=file.name, n=n, status=status, url=url))
 
 async def process_path(options, path):
