@@ -27,54 +27,17 @@ import asyncio
 import http
 import io
 import re
-import ssl
 import sys
 import types
-
-import aiohttp
-import werkzeug.urls
 
 from lib.io import (
     get_encoding,
     open_file,
 )
 from lib.version import __version__
+from lib.web import check_url
 
-user_agent = 'urlycue (https://github.com/jwilk/urlycue)'
-http_headers = {'User-Agent': user_agent}
 n_workers = 8
-
-_url_cache = {}
-
-async def check_url(url):
-    '''
-    check the URL
-    return http.HTTPStatus or an exception
-    '''
-    url = werkzeug.urls.iri_to_uri(url)
-    try:
-        return _url_cache[url]
-    except KeyError:
-        pass
-    try:
-        async with aiohttp.ClientSession(headers=http_headers) as session:
-            async with session.head(url) as response:
-                status = response.status
-                try:
-                    status = http.HTTPStatus(status)  # pylint: disable=no-value-for-parameter
-                except ValueError as exc:
-                    status = exc
-    except aiohttp.errors.ClientOSError as exc:
-        rexc = exc
-        while rexc is not None:
-            if isinstance(rexc, ssl.SSLError):
-                break
-            rexc = rexc.__cause__
-        status = rexc or exc
-    except ssl.CertificateError as exc:
-        status = exc
-    _url_cache[url] = status
-    return status
 
 def extract_urls(s):
     '''
