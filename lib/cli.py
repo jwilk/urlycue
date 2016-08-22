@@ -58,7 +58,12 @@ async def check_url(url):
                 if status == 200:
                     status = None
     except aiohttp.errors.ClientOSError as exc:
-        status = exc
+        rexc = exc
+        while rexc is not None:
+            if isinstance(rexc, ssl.SSLError):
+                break
+            rexc = rexc.__cause__
+        status = rexc or exc
     except ssl.CertificateError as exc:
         status = exc
     _url_cache[url] = status
