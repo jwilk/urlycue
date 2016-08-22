@@ -47,6 +47,10 @@ n_workers = 8
 _url_cache = {}
 
 async def check_url(url):
+    '''
+    check the URL
+    return http.HTTPStatus or an exception
+    '''
     url = werkzeug.urls.iri_to_uri(url)
     try:
         return _url_cache[url]
@@ -73,11 +77,17 @@ async def check_url(url):
     return status
 
 def extract_urls(s):
+    '''
+    extract URLs from the string
+    '''
     return re.compile(
         r'''https?://[^\s\\"'<>)\]}]+'''  # FIXME: this is very simplistic
     ).findall(s)
 
 async def process_file(options, file):
+    '''
+    check the opened file
+    '''
     for n, line in enumerate(file, 1):
         for url in extract_urls(line):
             if options.dry_run:
@@ -91,12 +101,18 @@ async def process_file(options, file):
             print('{path}:{n}: [{status}] {url}'.format(path=file.name, n=n, status=status, url=url))
 
 async def process_path(options, path):
+    '''
+    check the file with the specified pathname
+    '''
     encoding = options.encoding
     file = open_file(path, encoding=encoding, errors='replace')
     with file:
         return await process_file(options, file)
 
 async def process_queue(context):
+    '''
+    check all files from the queue
+    '''
     while True:
         url = await context.queue.get()
         if url is None:
@@ -104,6 +120,9 @@ async def process_queue(context):
         await process_path(context.options, url)
 
 async def queue_files(context, paths):
+    '''
+    add files to the queue
+    '''
     for path in paths:
         await context.queue.put(path)
     queue = context.queue
@@ -112,6 +131,9 @@ async def queue_files(context, paths):
         await queue.put(None)
 
 def process_files(options, paths):
+    '''
+    check all files
+    '''
     context = types.SimpleNamespace()
     context.options = options
     context.queue = asyncio.Queue()
