@@ -106,6 +106,7 @@ async def queue_files(context, paths):
         await context.queue.put(path)
     queue = context.queue
     for i in range(n_workers):
+        del i
         await queue.put(None)
 
 def process_files(options, paths):
