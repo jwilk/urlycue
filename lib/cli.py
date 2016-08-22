@@ -61,7 +61,7 @@ async def check_url(url):
             async with session.head(url) as response:
                 status = response.status
                 try:
-                    status = http.HTTPStatus(status)
+                    status = http.HTTPStatus(status)  # pylint: disable=no-value-for-parameter
                 except ValueError as exc:
                     status = exc
     except aiohttp.errors.ClientOSError as exc:
