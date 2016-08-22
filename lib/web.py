@@ -60,6 +60,8 @@ async def check_url(url):
         status = rexc or exc
     except ssl.CertificateError as exc:
         status = exc
+    except aiohttp.errors.ClientResponseError as exc:
+        status = exc
     _url_cache[url] = status
     return status
 
