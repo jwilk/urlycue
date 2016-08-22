@@ -52,7 +52,7 @@ async def check_url(url):
     except KeyError:
         pass
     try:
-        async with aiohttp.ClientSession() as session:
+        async with aiohttp.ClientSession(headers=http_headers) as session:
             async with session.head(url) as response:
                 status = response.status
                 if status == 200:
