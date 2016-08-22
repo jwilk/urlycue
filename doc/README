@@ -1,0 +1,21 @@
+Overview
+========
+
+**urlycue** is a command-line URL checker.
+
+Prerequisites
+=============
+
+* Python ≥ 3.5
+
+* aiohttp_
+
+* werkzeug_
+
+.. _aiohttp:
+   https://pypi.python.org/pypi/aiohttp
+
+.. _werkzeug:
+   https://pypi.python.org/pypi/werkzeug
+
+.. vim:ft=rst ts=3 sts=3 sw=3 et
