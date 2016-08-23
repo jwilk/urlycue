@@ -45,7 +45,7 @@ async def check_url(url):
         pass
     try:
         async with aiohttp.ClientSession(headers=http_headers) as session:
-            async with session.head(url) as response:
+            async with session.get(url, allow_redirects=False) as response:
                 status = response.status
                 try:
                     status = http.HTTPStatus(status)  # pylint: disable=no-value-for-parameter
