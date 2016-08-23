@@ -24,7 +24,6 @@ the command-line interface
 
 import argparse
 import asyncio
-import http
 import io
 import re
 import sys
@@ -35,7 +34,7 @@ from lib.io import (
     open_file,
 )
 from lib.version import __version__
-from lib.web import check_url
+from lib import web
 
 n_workers = 8
 
@@ -51,18 +50,20 @@ async def process_url(options, location, url):
     '''
     check the URL
     '''
+    what = url
     if options.dry_run:
-        status = http.HTTPStatus.OK
+        status = web.status_ok
     else:
-        status = await check_url(url)
-    if isinstance(status, http.HTTPStatus):
-        if (status == http.HTTPStatus.OK) and (not options.verbose):
+        status = await web.check_url(url)
+    if isinstance(status, Exception):
+        status = str(status) or repr(status)
+    else:
+        if status.ok and (not options.verbose):
             return
-        str_status = '{s} {s.phrase}'.format(s=status)
-    else:
-        str_status = str(status) or repr(status)
+        if status.location is not None:
+            what += ' -> ' + status.location
     (path, n) = location
-    print('{path}:{n}: [{status}] {url}'.format(path=path, n=n, status=str_status, url=url))
+    print('{path}:{n}: [{status}] {what}'.format(path=path, n=n, status=status, what=what))
 
 async def process_queue(context):
     '''

@@ -31,12 +31,28 @@ import werkzeug.urls
 user_agent = 'urlycue (https://github.com/jwilk/urlycue)'
 http_headers = {'User-Agent': user_agent}
 
+class WebStatus(object):
+    '''
+    HTTP response status + location
+    '''
+
+    def __init__(self, *, code, location=None):
+        self.code = http.HTTPStatus(code)  # pylint: disable=no-value-for-parameter
+        self.location = location
+        self.ok = self.code == http.HTTPStatus.OK
+
+    def __str__(self):
+        return '{hs} {hs.phrase}'.format(hs=self.code)
+
+status_ok = WebStatus(code=http.HTTPStatus.OK)
+assert status_ok.ok
+
 _url_cache = {}
 
 async def check_url(url):
     '''
     check the URL
-    return http.HTTPStatus or an exception
+    return an exception or WebStatus object
     '''
     url = werkzeug.urls.iri_to_uri(url)
     try:
@@ -46,7 +62,13 @@ async def check_url(url):
     try:
         async with aiohttp.ClientSession(headers=http_headers) as session:
             async with session.get(url, allow_redirects=False) as response:
-                status = response.status
+                try:
+                    status = WebStatus(
+                        code=response.status,
+                        location=response.headers.get('Location')
+                    )
+                except ValueError as exc:
+                    status = exc
     except aiohttp.errors.ClientOSError as exc:
         rexc = exc
         while rexc is not None:
@@ -58,14 +80,13 @@ async def check_url(url):
         status = exc
     except aiohttp.errors.ClientResponseError as exc:
         status = exc
-    else:
-        try:
-            status = http.HTTPStatus(status)  # pylint: disable=no-value-for-parameter
-        except ValueError as exc:
-            status = exc
     _url_cache[url] = status
     return status
 
-__all__ = ['check_url']
+__all__ = [
+    'WebStatus',
+    'status_ok',
+    'check_url',
+]
 
 # vim:ts=4 sts=4 sw=4 et
