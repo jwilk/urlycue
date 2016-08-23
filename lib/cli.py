@@ -106,6 +106,7 @@ def process_files(options, paths):
     tasks += [process_queue(context) for i in range(n_workers)]
     loop = asyncio.get_event_loop()
     loop.run_until_complete(asyncio.gather(*tasks))
+    loop.close()
 
 class VersionAction(argparse.Action):
     '''
