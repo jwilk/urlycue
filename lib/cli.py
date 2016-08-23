@@ -69,9 +69,10 @@ async def process_queue(context):
     check all URLs from the queue
     '''
     while True:
-        (location, url) = await context.queue.get()
-        if url is None:
+        item = await context.queue.get()
+        if item is None:
             return
+        (location, url) = item
         await process_url(context.options, location, url)
 
 def extract_urls_from_file(context, path):
@@ -97,7 +98,7 @@ async def queue_files(context, paths):
             await queue.put((location, url))
     for i in range(n_workers):
         del i
-        await queue.put((None, None))
+        await queue.put(None)
 
 def process_files(options, paths):
     '''
