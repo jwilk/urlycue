@@ -144,8 +144,8 @@ def main():
         help='file to check (default: stdin)')
     options = ap.parse_args()
     options.encoding = encoding = get_encoding()
-    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding, line_buffering=sys.stdout.line_buffering)
-    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding, line_buffering=sys.stderr.line_buffering)
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding, line_buffering=True)
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding, line_buffering=True)
     paths = options.files
     del options.files
     process_files(options, paths)
