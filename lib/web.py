@@ -47,10 +47,6 @@ async def check_url(url):
         async with aiohttp.ClientSession(headers=http_headers) as session:
             async with session.get(url, allow_redirects=False) as response:
                 status = response.status
-                try:
-                    status = http.HTTPStatus(status)  # pylint: disable=no-value-for-parameter
-                except ValueError as exc:
-                    status = exc
     except aiohttp.errors.ClientOSError as exc:
         rexc = exc
         while rexc is not None:
@@ -62,6 +58,11 @@ async def check_url(url):
         status = exc
     except aiohttp.errors.ClientResponseError as exc:
         status = exc
+    else:
+        try:
+            status = http.HTTPStatus(status)  # pylint: disable=no-value-for-parameter
+        except ValueError as exc:
+            status = exc
     _url_cache[url] = status
     return status
 
