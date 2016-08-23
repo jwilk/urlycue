@@ -1,5 +1,3 @@
-Use GET, not HEAD. The latter is not reliable.
-
 Don't follow temporary redirects by default.
 
 Make the URL extractor more reliable.
