@@ -9,8 +9,10 @@ install:
 - pip install aiohttp werkzeug
 - pip install pyflakes
 - pip install pylint
+- pip install docutils
 script:
 - private/run-pyflakes
 - private/run-pylint
+- find -name '*.rst' | xargs -L1 -t -I{} rst2xml.py --strict {} /dev/null
 
 # vim:ts=2 sts=2 sw=2 et
