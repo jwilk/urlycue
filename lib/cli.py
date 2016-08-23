@@ -47,53 +47,57 @@ def extract_urls(s):
         r'''https?://[^\s\\"'<>)\]}#]+'''  # FIXME: this is very simplistic
     ).findall(s)
 
-async def process_file(options, file):
+async def process_url(options, location, url):
     '''
-    check the opened file
+    check the URL
     '''
-    for n, line in enumerate(file, 1):
-        for url in extract_urls(line):
-            if options.dry_run:
-                status = http.HTTPStatus.OK
-            else:
-                status = await check_url(url)
-            if isinstance(status, http.HTTPStatus):
-                if (status == http.HTTPStatus.OK) and (not options.verbose):
-                    continue
-                str_status = '{s} {s.phrase}'.format(s=status)
-            else:
-                str_status = str(status) or repr(status)
-            print('{path}:{n}: [{status}] {url}'.format(path=file.name, n=n, status=str_status, url=url))
-
-async def process_path(options, path):
-    '''
-    check the file with the specified pathname
-    '''
-    encoding = options.encoding
-    file = open_file(path, encoding=encoding, errors='replace')
-    with file:
-        return await process_file(options, file)
+    if options.dry_run:
+        status = http.HTTPStatus.OK
+    else:
+        status = await check_url(url)
+    if isinstance(status, http.HTTPStatus):
+        if (status == http.HTTPStatus.OK) and (not options.verbose):
+            return
+        str_status = '{s} {s.phrase}'.format(s=status)
+    else:
+        str_status = str(status) or repr(status)
+    (path, n) = location
+    print('{path}:{n}: [{status}] {url}'.format(path=path, n=n, status=str_status, url=url))
 
 async def process_queue(context):
     '''
-    check all files from the queue
+    check all URLs from the queue
     '''
     while True:
-        url = await context.queue.get()
+        (location, url) = await context.queue.get()
         if url is None:
             return
-        await process_path(context.options, url)
+        await process_url(context.options, location, url)
+
+def extract_urls_from_file(context, path):
+    '''
+    extract URLs from file
+    yield ((path, n), url) tuples
+    '''
+    encoding = context.options.encoding
+    file = open_file(path, encoding=encoding, errors='replace')
+    with file:
+        for n, line in enumerate(file, 1):
+            for url in extract_urls(line):
+                location = (file.name, n)
+                yield (location, url)
 
 async def queue_files(context, paths):
     '''
-    add files to the queue
+    add URLs from files to the queue
     '''
-    for path in paths:
-        await context.queue.put(path)
     queue = context.queue
+    for path in paths:
+        for (location, url) in extract_urls_from_file(context, path):
+            await queue.put((location, url))
     for i in range(n_workers):
         del i
-        await queue.put(None)
+        await queue.put((None, None))
 
 def process_files(options, paths):
     '''
