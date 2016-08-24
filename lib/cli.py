@@ -139,7 +139,7 @@ def main():
     ap = argparse.ArgumentParser(description='URL checker')
     ap.add_argument('--version', action=VersionAction)
     ap.add_argument('--dry-run', action='store_true', help="don't do any connections")
-    ap.add_argument('--verbose', action='store_true', help='print also URLs without issues')
+    ap.add_argument('-v', '--verbose', action='store_true', help='print also URLs without issues')
     ap.add_argument('files', metavar='FILE', nargs='*', default=['-'],
         help='file to check (default: stdin)')
     options = ap.parse_args()
