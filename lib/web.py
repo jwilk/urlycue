@@ -31,7 +31,7 @@ import werkzeug.urls
 user_agent = 'urlycue (https://github.com/jwilk/urlycue)'
 http_headers = {'User-Agent': user_agent}
 
-class WebStatus(object):
+class Status(object):
     '''
     HTTP response status + location
     '''
@@ -44,7 +44,7 @@ class WebStatus(object):
     def __str__(self):
         return '{hs} {hs.phrase}'.format(hs=self.code)
 
-status_ok = WebStatus(code=http.HTTPStatus.OK)
+status_ok = Status(code=http.HTTPStatus.OK)
 assert status_ok.ok
 
 _url_cache = {}
@@ -52,7 +52,7 @@ _url_cache = {}
 async def check_url(url):
     '''
     check the URL
-    return an exception or WebStatus object
+    return an exception or Status object
     '''
     url = werkzeug.urls.iri_to_uri(url)
     try:
@@ -63,7 +63,7 @@ async def check_url(url):
         async with aiohttp.ClientSession(headers=http_headers) as session:
             async with session.get(url, allow_redirects=False) as response:
                 try:
-                    status = WebStatus(
+                    status = Status(
                         code=response.status,
                         location=response.headers.get('Location')
                     )
@@ -88,7 +88,7 @@ async def check_url(url):
     return status
 
 __all__ = [
-    'WebStatus',
+    'Status',
     'status_ok',
     'check_url',
 ]
