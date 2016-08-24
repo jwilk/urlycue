@@ -1,4 +1,6 @@
-Don't follow temporary redirects by default.
+Follow redirects.
+
+Ignore temporary redirects by default (unless the sequence of redirects ends with an error).
 
 Make the URL extractor more reliable.
 
