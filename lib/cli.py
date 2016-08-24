@@ -43,7 +43,7 @@ def extract_urls(s):
     extract URLs from the string
     '''
     return re.compile(
-        r'''https?://[^\s\\"'<>)\]}#]+'''  # FIXME: this is very simplistic
+        r'''https?://\w[^\s\\"'<>)\]}#]+'''  # FIXME: this is very simplistic
     ).findall(s)
 
 async def process_url(options, location, url):
