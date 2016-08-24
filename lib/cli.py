@@ -51,10 +51,10 @@ async def process_url(options, location, url):
     check the URL
     '''
     what = url
-    if options.dry_run:
-        status = web.status_ok
-    else:
-        status = await web.check_url(url)
+    if options.list:
+        print(url)
+        return
+    status = await web.check_url(url)
     if isinstance(status, Exception):
         status = str(status) or repr(status)
     else:
@@ -138,7 +138,7 @@ def main():
     '''
     ap = argparse.ArgumentParser(description='URL checker')
     ap.add_argument('--version', action=VersionAction)
-    ap.add_argument('--dry-run', action='store_true', help="don't do any connections")
+    ap.add_argument('-l', '--list', action='store_true', help='list all matching URLs')
     ap.add_argument('-v', '--verbose', action='store_true', help='print also URLs without issues')
     ap.add_argument('files', metavar='FILE', nargs='*', default=['-'],
         help='file to check (default: stdin)')
