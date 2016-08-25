@@ -23,6 +23,7 @@ HTTP client
 '''
 
 import http
+import logging
 import ssl
 
 import aiohttp
@@ -55,10 +56,15 @@ async def check_url(url):
     return an exception or Status object
     '''
     url = werkzeug.urls.iri_to_uri(url)
+    logger = logging.getLogger('urlycue')
+    logger.debug('start {}'.format(url))
     try:
-        return _url_cache[url]
+        cached = _url_cache[url]
     except KeyError:
         pass
+    else:
+        logger.debug('cached {}'.format(url))
+        return cached
     try:
         async with aiohttp.ClientSession(headers=http_headers) as session:
             async with session.get(url, allow_redirects=False) as response:
@@ -85,6 +91,7 @@ async def check_url(url):
     except aiohttp.errors.HttpProcessingError as exc:
         status = exc
     _url_cache[url] = status
+    logger.debug('done {}'.format(url))
     return status
 
 __all__ = [

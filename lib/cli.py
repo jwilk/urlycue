@@ -25,6 +25,7 @@ the command-line interface
 import argparse
 import asyncio
 import io
+import logging
 import re
 import sys
 import types
@@ -132,6 +133,18 @@ class VersionAction(argparse.Action):
         print('+ Python {0}.{1}.{2}'.format(*sys.version_info))
         parser.exit()
 
+def setup_logging(debug=False):
+    '''
+    logging setup
+    '''
+    logger = logging.getLogger('urlycue')
+    formatter = logging.Formatter('* %(message)s')
+    handler = logging.StreamHandler()
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
+    if debug:
+        logger.setLevel(logging.DEBUG)
+
 def main():
     '''
     run the program
@@ -140,6 +153,7 @@ def main():
     ap.add_argument('--version', action=VersionAction)
     ap.add_argument('-l', '--list', action='store_true', help='list all matching URLs')
     ap.add_argument('-v', '--verbose', action='store_true', help='print also URLs without issues')
+    ap.add_argument('--debug', action='store_true', help=argparse.SUPPRESS)
     ap.add_argument('files', metavar='FILE', nargs='*', default=['-'],
         help='file to check (default: stdin)')
     options = ap.parse_args()
@@ -148,6 +162,7 @@ def main():
     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding, line_buffering=True)
     paths = options.files
     del options.files
+    setup_logging(debug=options.debug)
     process_files(options, paths)
 
 __all__ = ['main']

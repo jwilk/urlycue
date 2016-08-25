@@ -5,6 +5,7 @@ disable =
     fixme,
     invalid-name,
     locally-disabled,
+    logging-format-interpolation,
     redefined-variable-type,
     too-few-public-methods,
 
