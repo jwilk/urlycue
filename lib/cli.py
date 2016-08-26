@@ -50,11 +50,11 @@ def extract_urls(s):
 async def process_url(options, location, url):
     '''
     check the URL
+    return string describing an issue with the URL, or None
     '''
     what = url
     if options.list:
-        print(url)
-        return
+        return url
     status = await web.check_url(url)
     if isinstance(status, Exception):
         status = str(status) or repr(status)
@@ -64,18 +64,23 @@ async def process_url(options, location, url):
         if status.location is not None:
             what += ' -> ' + status.location
     (path, n) = location
-    print('{path}:{n}: [{status}] {what}'.format(path=path, n=n, status=status, what=what))
+    return '{path}:{n}: [{status}] {what}'.format(path=path, n=n, status=status, what=what)
 
-async def process_queue(context):
+async def process_input_queue(context):
     '''
     check all URLs from the queue
+    add the results to the output queue
     '''
+    input_queue = context.input_queue
+    output_queue = context.output_queue
     while True:
-        item = await context.queue.get()
+        item = await input_queue.get()
         if item is None:
-            return
-        (location, url) = item
-        await process_url(context.options, location, url)
+            break
+        (j, location, url) = item
+        s = await process_url(context.options, location, url)
+        await output_queue.put((j, s))
+    await output_queue.put(None)
 
 def extract_urls_from_file(context, path):
     '''
@@ -92,15 +97,41 @@ def extract_urls_from_file(context, path):
 
 async def queue_files(context, paths):
     '''
-    add URLs from files to the queue
+    add URLs from files to the input queue
     '''
-    queue = context.queue
+    queue = context.input_queue
+    j = 0
     for path in paths:
         for (location, url) in extract_urls_from_file(context, path):
-            await queue.put((location, url))
+            await queue.put((j, location, url))
+            j += 1
     for i in range(n_workers):
         del i
         await queue.put(None)
+
+async def process_results(context):
+    '''
+    print results from the output queue in the right order
+    '''
+    queue = context.output_queue
+    done = 0
+    todo = {}
+    curr = 0
+    while done < n_workers:
+        item = await queue.get()
+        if item is None:
+            done += 1
+            continue
+        (j, s) = item
+        assert j not in todo
+        todo[j] = s
+        while curr in todo:
+            s = todo.pop(curr)
+            if s is not None:
+                print(s)
+            curr += 1
+    assert not todo, (curr, todo)
+    assert queue.empty()
 
 def process_files(options, paths):
     '''
@@ -108,9 +139,11 @@ def process_files(options, paths):
     '''
     context = types.SimpleNamespace()
     context.options = options
-    context.queue = asyncio.Queue()
+    context.input_queue = asyncio.Queue()
+    context.output_queue = asyncio.Queue()
     tasks = [queue_files(context, paths)]
-    tasks += [process_queue(context) for i in range(n_workers)]
+    tasks += [process_results(context)]
+    tasks += [process_input_queue(context) for i in range(n_workers)]
     loop = asyncio.get_event_loop()
     loop.run_until_complete(asyncio.gather(*tasks))
     loop.close()
