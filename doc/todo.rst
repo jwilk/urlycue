@@ -1,5 +1,3 @@
-Print URLs in the same order they appear in files.
-
 Follow redirects.
 
 Ignore temporary redirects by default (unless the sequence of redirects ends with an error).
