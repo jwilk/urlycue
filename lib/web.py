@@ -50,6 +50,17 @@ assert status_ok.ok
 
 _url_cache = {}
 
+async def _check_url(session, url):
+    async with session.get(url, allow_redirects=False) as response:
+        try:
+            status = Status(
+                code=response.status,
+                location=response.headers.get('Location')
+            )
+        except ValueError as exc:
+            status = exc
+    return status
+
 async def check_url(url):
     '''
     check the URL
@@ -67,14 +78,7 @@ async def check_url(url):
         return cached
     try:
         async with aiohttp.ClientSession(headers=http_headers) as session:
-            async with session.get(url, allow_redirects=False) as response:
-                try:
-                    status = Status(
-                        code=response.status,
-                        location=response.headers.get('Location')
-                    )
-                except ValueError as exc:
-                    status = exc
+            status = await _check_url(session, url)
     except aiohttp.errors.ClientOSError as exc:
         rexc = exc
         while rexc is not None:
