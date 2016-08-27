@@ -10,12 +10,12 @@ Prerequisites
 
 * aiohttp_
 
-* werkzeug_
+* Werkzeug_
 
 .. _aiohttp:
    https://pypi.python.org/pypi/aiohttp
 
-.. _werkzeug:
-   https://pypi.python.org/pypi/werkzeug
+.. _Werkzeug:
+   https://pypi.python.org/pypi/Werkzeug
 
 .. vim:ft=rst ts=3 sts=3 sw=3 et
