@@ -51,7 +51,7 @@ assert status_ok.ok
 _url_cache = {}
 
 async def _check_url(session, url):
-    async with session.get(url, allow_redirects=False) as response:
+    async with session.head(url, allow_redirects=False) as response:
         try:
             status = Status(
                 code=response.status,
