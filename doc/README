@@ -1,7 +1,11 @@
 Overview
 ========
 
-**urlycue** is a command-line URL checker.
+**urlycue** is a command-line URL checker::
+
+   $ urlycue doc/README
+   doc/README:7: [301 Moved Permanently] http://github.com/jwilk/urlycue.git -> https://github.com/jwilk/urlycue
+   doc/README:8: [404 Not Found] http://example.org/nonexistent
 
 Prerequisites
 =============
