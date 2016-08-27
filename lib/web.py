@@ -48,8 +48,6 @@ class Status(object):
 status_ok = Status(code=http.HTTPStatus.OK)
 assert status_ok.ok
 
-_url_cache = {}
-
 async def _check_url(session, url):
     async with session.head(url, allow_redirects=False) as response:
         try:
@@ -60,6 +58,8 @@ async def _check_url(session, url):
         except ValueError as exc:
             status = exc
     return status
+
+_url_cache = {}
 
 async def check_url(url):
     '''
