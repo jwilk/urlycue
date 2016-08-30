@@ -24,11 +24,13 @@ the command-line interface
 
 import argparse
 import asyncio
+import atexit
 import io
 import logging
 import re
 import sys
 import types
+import warnings
 
 from lib.io import (
     get_encoding,
@@ -147,6 +149,12 @@ def process_files(options, paths):
     loop = asyncio.get_event_loop()
     loop.run_until_complete(asyncio.gather(*tasks))
     loop.close()
+    atexit.register(  # https://github.com/KeepSafe/aiohttp/issues/1115
+        warnings.filterwarnings,
+        action='ignore',
+        message='^unclosed transport ',
+        category=ResourceWarning,
+    )
 
 class VersionAction(argparse.Action):
     '''
