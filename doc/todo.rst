@@ -13,3 +13,5 @@ __ https://tools.ietf.org/html/rfc6797
 Implement `Upgrade Insecure Requests`__
 
 __ https://www.w3.org/TR/upgrade-insecure-requests/
+
+Add option to use ``GET`` instead of ``HEAD``.
