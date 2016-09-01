@@ -27,11 +27,11 @@ import asyncio
 import atexit
 import io
 import logging
-import re
 import sys
 import types
 import warnings
 
+from lib.extractor import extract_urls
 from lib.io import (
     get_encoding,
     open_file,
@@ -40,14 +40,6 @@ from lib.version import __version__
 from lib import web
 
 n_workers = 8
-
-def extract_urls(s):
-    '''
-    extract URLs from the string
-    '''
-    return re.compile(
-        r'''https?://\w[^\s\\"'<>)\]}#]+'''  # FIXME: this is very simplistic
-    ).findall(s)
 
 async def process_url(options, location, url):
     '''
