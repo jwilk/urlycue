@@ -15,3 +15,7 @@ Implement `Upgrade Insecure Requests`__
 __ https://www.w3.org/TR/upgrade-insecure-requests/
 
 Add option to use ``GET`` instead of ``HEAD``.
+
+Add support for FTP URLs.
+
+Add support for mailto URLs.
