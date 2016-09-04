@@ -6,7 +6,7 @@ cache:
   directories:
   - $HOME/.cache/pip
 install:
-- pip install aiohttp werkzeug
+- pip install aiohttp
 - pip install pyflakes
 - pip install pylint
 - pip install docutils
