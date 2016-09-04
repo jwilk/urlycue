@@ -28,7 +28,6 @@ import ssl
 import urllib.parse
 
 import aiohttp
-import werkzeug.urls
 
 user_agent = 'urlycue (https://github.com/jwilk/urlycue)'
 http_headers = {'User-Agent': user_agent}
@@ -101,7 +100,6 @@ async def check_url(url):
     check the URL
     return an exception or Status object
     '''
-    url = werkzeug.urls.iri_to_uri(url)
     logger = logging.getLogger('urlycue')
     logger.debug('start {}'.format(url))
     try:
