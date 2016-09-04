@@ -1,5 +1,5 @@
-urlycue (0.1) UNRELEASED; urgency=low
+urlycue (0.1) unstable; urgency=low
 
   * Initial release.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Tue, 23 Aug 2016 14:38:33 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Sun, 04 Sep 2016 22:16:17 +0200
