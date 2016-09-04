@@ -47,7 +47,7 @@ c_urly = c_reserved | c_unreserved
 c_foreign = chars('\0', '\x7f') - c_urly
 
 regexp = r'(?<=[(])https?://(?:{C}|%[0-9a-fA-F]{{2}})+(?=[)])'.format(  # hi, Markdown!
-    C=chars_to_re(c_foreign | {'(' ,')'}, prefix=r'^\s')
+    C=chars_to_re(c_foreign | {'(', ')'}, prefix=r'^\s')
 ) + r'|\bhttps?://(?:{C}|%[0-9a-fA-F]{{2}})+'.format(
     C=chars_to_re(c_foreign, prefix=r'^\s')
 )
