@@ -1,7 +1,5 @@
 Add option to report temporary redirects as issues.
 
-Make the URL extractor more reliable.
-
 Add manual page.
 
 Add test suite.
