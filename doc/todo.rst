@@ -19,3 +19,6 @@ Add option to use ``GET`` instead of ``HEAD``.
 Add support for FTP URLs.
 
 Add support for mailto URLs.
+
+Don't complain about URLs that are also identifiers,
+such as <http://www.w3.org/1999/xhtml>.
