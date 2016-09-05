@@ -1,8 +1,9 @@
 urlycue (0.1.1) UNRELEASED; urgency=low
 
-  * 
+  * Make --version print the aiohttp version.
+  * Add the manual page.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Sun, 04 Sep 2016 22:24:40 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Mon, 05 Sep 2016 21:43:02 +0200
 
 urlycue (0.1) unstable; urgency=low
 
