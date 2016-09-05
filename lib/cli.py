@@ -164,6 +164,7 @@ class VersionAction(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
         print('{prog} {0}'.format(__version__, prog=parser.prog))
         print('+ Python {0}.{1}.{2}'.format(*sys.version_info))
+        print('+ aiohttp {0}'.format(web.aiohttp.__version__))
         parser.exit()
 
 def setup_logging(debug=False):
