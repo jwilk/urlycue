@@ -23,6 +23,7 @@ URL extraction
 '''
 
 import re
+import urllib.parse
 
 def chars(l, r):
     '''
@@ -94,7 +95,8 @@ def extract_urls(s):
         prefix = s[(l - 1):l]
         url = trim_url(match.group(), prefix=prefix)
         url = strip_fragment(url)
-        yield url
+        if urllib.parse.urlparse(url).netloc:
+            yield url
 
 __all__ = ['extract_urls']
 
