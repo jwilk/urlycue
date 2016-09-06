@@ -14,5 +14,6 @@ script:
 - private/run-pyflakes
 - private/run-pylint
 - private/check-rst
+- make -C doc
 
 # vim:ts=2 sts=2 sw=2 et
