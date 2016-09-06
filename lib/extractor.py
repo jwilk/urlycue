@@ -66,7 +66,7 @@ def trim_url(url, prefix=''):
     n = {c: url.count(c) for c in '()[]'}
     while r > 0:
         c = url[r]
-        if c in ".,;'":
+        if c in ".,:;'":
             r -= 1
         elif c == ')' and n['('] < n[')']:
             r -= 1
