@@ -64,17 +64,28 @@ def trim_url(url, prefix=''):
     if url.endswith("'/"):
         return url[:-2]
     r = len(url) - 1
-    n = {c: url.count(c) for c in '()[]'}
+    brackets = {
+        ket: bra
+        for bra, ket in {'()', '[]'}
+    }
+    n = {c: url.count(c)
+        for item in brackets.items()
+        for c in item
+    }
     while r > 0:
         c = url[r]
         if c in ".,:;'":
             r -= 1
-        elif c == ')' and n['('] < n[')']:
+            continue
+        try:
+            ket = c
+            bra = brackets[ket]
+        except KeyError:
+            break
+        if n[bra] < n[ket]:
             r -= 1
-            n[')'] -= 1
-        elif c == ']' and n['['] < n[']']:
-            r -= 1
-            n[']'] -= 1
+            n[ket] -= 1
+            continue
         else:
             break
     return url[:(r + 1)]
