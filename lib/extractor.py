@@ -66,7 +66,7 @@ def trim_url(url, prefix=''):
     r = len(url) - 1
     brackets = {
         ket: bra
-        for bra, ket in {'()', '[]'}
+        for bra, ket in {'()', '[]', '⟨⟩'}
     }
     n = {c: url.count(c)
         for item in brackets.items()
