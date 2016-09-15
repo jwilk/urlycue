@@ -1,6 +1,4 @@
-#!/usr/bin/env python3
-
-# Copyright © 2016 Jakub Wilk <jwilk@jwilk.net>
+# Copyright © 2012-2016 Jakub Wilk <jwilk@jwilk.net>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the “Software”), to deal
@@ -20,43 +18,36 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-'''
-urlycue: a URL checker
-'''
+PYTHON = python3
+INSTALL = install
 
-import sys
+PREFIX = /usr/local
+DESTDIR =
 
-# ----------------------------------------
+exe = urlycue
 
-def error(message):
-    try:
-        import argparse
-        ap = argparse.ArgumentParser()
-        prog = ap.prog
-    except ImportError:
-        import optparse  # pylint: disable=deprecated-module
-        ap = optparse.OptionParser()
-        prog = ap.get_prog_name()
-    message = ''.join((prog, ': error: ', message, '\n'))
-    ap.exit(1, message)
+bindir = $(PREFIX)/bin
+basedir = $(PREFIX)/share/$(exe)
+mandir = $(PREFIX)/share/man
 
-def require_python(*version):
-    if sys.version_info < version:
-        version_str = '.'.join(map(str, version))
-        message = 'Python >= %s is required' % version_str
-        error(message)
+.PHONY: all
+all: ;
 
-require_python(3, 5)
+.PHONY: install
+install:
+	# binary:
+	$(INSTALL) -d -m755 $(DESTDIR)$(bindir)
+	sed -e "s#^basedir = .*#basedir = '$(basedir)/'#" $(exe) > $(DESTDIR)$(bindir)/$(exe)
+	chmod 0755 $(DESTDIR)$(bindir)/$(exe)
+	# library + data:
+	( find lib data -type f ! -name '*.py[co]' ) \
+	| xargs -t -I {} $(INSTALL) -p -D -m644 {} $(DESTDIR)$(basedir)/{}
+	# manual page:
+	$(INSTALL) -p -D -m644 doc/$(exe).1 $(DESTDIR)$(mandir)/man1/$(exe).1
 
-# ----------------------------------------
+.PHONY: clean
+clean:
+	find . -type f -name '*.py[co]' -delete
+	find . -type d -name '__pycache__' -delete
 
-basedir = None
-if basedir is not None:
-    sys.path[:0] = [basedir]
-
-import lib.cli  # pylint: disable=wrong-import-position
-
-if __name__ == '__main__':
-    lib.cli.main()
-
-# vim:ts=4 sts=4 sw=4 et
+# vim:ts=4 sts=4 sw=4 noet
