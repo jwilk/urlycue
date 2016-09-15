@@ -7,8 +7,8 @@ command-line URL checker
 ------------------------
 
 :manual section: 1
-:version: urlycue 0.1.1
-:date: 2016-09-05
+:version: urlycue 0.2
+:date: 2016-09-15
 
 Synopsis
 --------

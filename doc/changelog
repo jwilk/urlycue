@@ -1,11 +1,11 @@
-urlycue (0.1.1) UNRELEASED; urgency=low
+urlycue (0.2) UNRELEASED; urgency=low
 
   * Make --version print the aiohttp version.
   * Add the manual page.
   * Strip trailing colons from URLs.
   * Implement a minimal URL syntax check.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Tue, 06 Sep 2016 22:52:57 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Thu, 15 Sep 2016 16:32:51 +0200
 
 urlycue (0.1) unstable; urgency=low
 
