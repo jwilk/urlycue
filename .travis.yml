@@ -13,7 +13,7 @@ install:
 - pip install docutils
 script:
 - private/run-pyflakes
-- private/run-pylint
+- if [[ ! "$TRAVIS_PYTHON_VERSION" =~ dev ]]; then private/run-pylint; fi
 - private/check-rst
 - make -C doc
 
