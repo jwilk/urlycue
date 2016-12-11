@@ -50,6 +50,7 @@ find -name '__pycache__' | xargs rm -rf
 rm .git*
 rm .travis.yml
 rm README.rst  # shipped as doc/README
+mv LICENSE doc/
 rm private/build-source-tarball
 make -C doc/
 cd ..
