@@ -39,8 +39,8 @@ install:
 	$(INSTALL) -d -m755 $(DESTDIR)$(bindir)
 	sed -e "s#^basedir = .*#basedir = '$(basedir)/'#" $(exe) > $(DESTDIR)$(bindir)/$(exe)
 	chmod 0755 $(DESTDIR)$(bindir)/$(exe)
-	# library + data:
-	( find lib data -type f ! -name '*.py[co]' ) \
+	# library:
+	( find lib -type f ! -name '*.py[co]' ) \
 	| xargs -t -I {} $(INSTALL) -p -D -m644 {} $(DESTDIR)$(basedir)/{}
 	# manual page:
 	$(INSTALL) -p -D -m644 doc/$(exe).1 $(DESTDIR)$(mandir)/man1/$(exe).1
