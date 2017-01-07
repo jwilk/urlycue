@@ -110,7 +110,7 @@ async def check_url(url):
         logger.debug('cached {}'.format(url))
         return cached
     try:
-        async with aiohttp.ClientSession(headers=http_headers) as session:
+        async with aiohttp.client.ClientSession(headers=http_headers) as session:
             status = await _check_url(session, url)
     except aiohttp.errors.ClientOSError as exc:
         rexc = exc
