@@ -3,9 +3,6 @@ python:
 - "3.5"
 - "3.6"
 - "3.7-dev"
-cache:
-  directories:
-  - $HOME/.cache/pip
 install:
 - pip install aiohttp
 - pip install pyflakes
