@@ -5,10 +5,12 @@ python:
 - "3.7-dev"
 install:
 - pip install aiohttp
+- pip install pydiatra
 - pip install pyflakes
 - pip install pylint
 - pip install docutils
 script:
+- private/run-pydiatra
 - private/run-pyflakes
 - if [[ ! "$TRAVIS_PYTHON_VERSION" =~ dev ]]; then private/run-pylint; fi
 - private/check-rst
