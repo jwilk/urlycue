@@ -95,7 +95,7 @@ async def _check_url(session, url):
 
 _url_cache = {}
 
-async def check_url(url):
+async def check_url(url, check_cert=True):
     '''
     check the URL
     return an exception or Status object
@@ -109,8 +109,13 @@ async def check_url(url):
     else:
         logger.debug('cached {}'.format(url))
         return cached
+    tls_context = ssl.create_default_context()
+    if not check_cert:
+        tls_context.check_hostname = False
+        tls_context.verify_mode = ssl.CERT_NONE
+    connector = aiohttp.TCPConnector(ssl_context=tls_context)
     try:
-        async with aiohttp.client.ClientSession(headers=http_headers) as session:
+        async with aiohttp.client.ClientSession(connector=connector, headers=http_headers) as session:
             status = await _check_url(session, url)
     except aiohttp.errors.ClientOSError as exc:
         rexc = exc

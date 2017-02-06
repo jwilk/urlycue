@@ -32,6 +32,8 @@ Options
    List all extracted URLs without checking anything.
 -v, --verbose
    Print also URLs without issues.
+-k, --no-cert-check
+   Don't verify server certificates.
 
 Example
 -------

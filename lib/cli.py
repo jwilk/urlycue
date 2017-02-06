@@ -49,7 +49,8 @@ async def process_url(options, location, url):
     what = url
     if options.list:
         return url
-    status = await web.check_url(url)
+    check_cert = not options.no_cert_check
+    status = await web.check_url(url, check_cert=check_cert)
     if isinstance(status, Exception):
         status = str(status) or repr(status)
     else:
@@ -189,6 +190,7 @@ def main():
     ap.add_argument('--version', action=VersionAction)
     ap.add_argument('-l', '--list', action='store_true', help='list all matching URLs')
     ap.add_argument('-v', '--verbose', action='store_true', help='print also URLs without issues')
+    ap.add_argument('-k', '--no-cert-check', action='store_true', help='disable certificate verification')
     ap.add_argument('--debug', action='store_true', help=argparse.SUPPRESS)
     ap.add_argument('files', metavar='FILE', nargs='*', default=['-'],
         help='file to check (default: stdin)')
