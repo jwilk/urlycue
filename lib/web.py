@@ -113,7 +113,7 @@ async def check_url(url, check_cert=True):
     if not check_cert:
         tls_context.check_hostname = False
         tls_context.verify_mode = ssl.CERT_NONE
-    connector = aiohttp.TCPConnector(ssl_context=tls_context)
+    connector = aiohttp.connector.TCPConnector(ssl_context=tls_context)
     try:
         async with aiohttp.client.ClientSession(connector=connector, headers=http_headers) as session:
             status = await _check_url(session, url)
