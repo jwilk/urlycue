@@ -101,13 +101,17 @@ def extract_urls(s):
     '''
     extract URLs from the string
     '''
+    bad_netloc_chars = {':', '$'}
+    bad_netloc_re = re.compile(
+        '|'.join(re.escape(ch) for ch in bad_netloc_chars)
+    )
     for match in regexp.finditer(s):
         l, _ = match.span()
         prefix = s[(l - 1):l]
         url = trim_url(match.group(), prefix=prefix)
         url = strip_fragment(url)
         netloc = urllib.parse.urlparse(url).netloc
-        if netloc and (':' not in netloc):
+        if netloc and not bad_netloc_re.search(netloc):
             yield url
 
 __all__ = ['extract_urls']
