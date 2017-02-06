@@ -3,8 +3,10 @@ urlycue (0.3) UNRELEASED; urgency=low
   * Rewrite shebang at install time.
   * Make the doc makefile more portable.
   * Add separate license file.
+  * Add the -k/--no-cert-check option, which disables certificate
+    vertification.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Mon, 06 Feb 2017 17:03:58 +0100
+ -- Jakub Wilk <jwilk@jwilk.net>  Mon, 06 Feb 2017 17:08:26 +0100
 
 urlycue (0.2) unstable; urgency=low
 
