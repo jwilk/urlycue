@@ -80,7 +80,7 @@ async def _check_url(session, url):
             if status.redirect:
                 n_redirects += 1
                 if n_redirects > redirect_limit:
-                    raise RuntimeError('redirect limit exceeded')
+                    return RuntimeError('redirect limit exceeded')
                 if redirect_status and status.permanent_redirect:
                     redirect_status = status
                 else:
