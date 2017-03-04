@@ -1,4 +1,4 @@
-urlycue (0.3) UNRELEASED; urgency=low
+urlycue (0.3) unstable; urgency=low
 
   * Add the -k/--no-cert-check option, which disables certificate
     vertification.
@@ -7,7 +7,7 @@ urlycue (0.3) UNRELEASED; urgency=low
   * Make the doc makefile more portable.
   * Add separate license file.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Sat, 04 Mar 2017 14:03:58 +0100
+ -- Jakub Wilk <jwilk@jwilk.net>  Sat, 04 Mar 2017 15:38:07 +0100
 
 urlycue (0.2) unstable; urgency=low
 
