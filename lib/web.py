@@ -29,6 +29,15 @@ import urllib.parse
 
 import aiohttp
 
+aiohttp_major_ver = int(aiohttp.__version__.split('.', 1)[0])
+if aiohttp_major_ver >= 2:
+    misc_aiohttp_errors = ()
+else:
+    misc_aiohttp_errors = (
+        aiohttp.errors.DisconnectedError,
+        aiohttp.errors.HttpProcessingError,
+    )
+
 user_agent = 'urlycue (https://github.com/jwilk/urlycue)'
 http_headers = {'User-Agent': user_agent}
 redirect_limit = 10
@@ -117,7 +126,7 @@ async def check_url(url, check_cert=True):
     try:
         async with aiohttp.client.ClientSession(connector=connector, headers=http_headers) as session:
             status = await _check_url(session, url)
-    except aiohttp.errors.ClientOSError as exc:
+    except aiohttp.ClientOSError as exc:
         rexc = exc
         while rexc is not None:
             if isinstance(rexc, ssl.SSLError):
@@ -126,11 +135,9 @@ async def check_url(url, check_cert=True):
         status = rexc or exc
     except ssl.CertificateError as exc:
         status = exc
-    except aiohttp.errors.ClientError as exc:
+    except aiohttp.ClientError as exc:
         status = exc
-    except aiohttp.errors.DisconnectedError as exc:
-        status = exc
-    except aiohttp.errors.HttpProcessingError as exc:
+    except misc_aiohttp_errors as exc:
         status = exc
     _url_cache[url] = status
     logger.debug('done {}'.format(url))
