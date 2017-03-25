@@ -34,8 +34,8 @@ if aiohttp_major_ver >= 2:
     misc_aiohttp_errors = ()
 else:
     misc_aiohttp_errors = (
-        aiohttp.errors.DisconnectedError,
-        aiohttp.errors.HttpProcessingError,
+        aiohttp.errors.DisconnectedError,  # pylint: disable=no-member
+        aiohttp.errors.HttpProcessingError,  # pylint: disable=no-member
     )
 
 user_agent = 'urlycue (https://github.com/jwilk/urlycue)'
@@ -137,7 +137,7 @@ async def check_url(url, check_cert=True):
         status = exc
     except aiohttp.ClientError as exc:
         status = exc
-    except misc_aiohttp_errors as exc:
+    except misc_aiohttp_errors as exc:  # pylint: disable=catching-non-exception
         status = exc
     _url_cache[url] = status
     logger.debug('done {}'.format(url))
