@@ -16,5 +16,6 @@ script:
 - private/check-rst
 - make -C doc
 - ./urlycue < doc/README
+- ./urlycue < test/urls
 
 # vim:ts=2 sts=2 sw=2 et
