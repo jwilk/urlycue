@@ -110,7 +110,10 @@ def extract_urls(s):
         prefix = s[(l - 1):l]
         url = trim_url(match.group(), prefix=prefix)
         url = strip_fragment(url)
-        netloc = urllib.parse.urlparse(url).netloc
+        try:
+            netloc = urllib.parse.urlparse(url).netloc
+        except ValueError:
+            continue
         if netloc and not bad_netloc_re.search(netloc):
             yield url
 
