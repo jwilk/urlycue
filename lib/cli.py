@@ -144,7 +144,7 @@ def process_files(options, paths):
         loop.run_until_complete(asyncio.gather(*tasks))
     finally:
         loop.close()
-    atexit.register(  # https://github.com/KeepSafe/aiohttp/issues/1115
+    atexit.register(  # https://github.com/aio-libs/aiohttp/issues/1115
         warnings.filterwarnings,
         action='ignore',
         message='^unclosed transport ',
