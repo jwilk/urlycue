@@ -31,13 +31,13 @@ import sys
 import types
 import warnings
 
-from lib.extractor import extract_urls
-from lib.io import (
+from .extractor import extract_urls
+from .io import (
     get_encoding,
     open_file,
 )
-from lib.version import __version__
-from lib import web
+from .version import __version__
+from . import web
 
 n_workers = 8
 
