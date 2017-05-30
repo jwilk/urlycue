@@ -17,7 +17,7 @@ script:
 - if [[ ! "$TRAVIS_PYTHON_VERSION" =~ dev ]]; then private/run-pylint; fi
 - private/check-rst
 - make -C doc
-- ./urlycue doc/README
-- ./urlycue test/urls
+- ./urlycue doc/README || [ $? -eq 2 ]
+- ./urlycue test/urls || [ $? -eq 2 ]
 
 # vim:ts=2 sts=2 sw=2 et

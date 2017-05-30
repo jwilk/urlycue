@@ -107,11 +107,13 @@ async def queue_files(context, paths):
 async def process_results(context):
     '''
     print results from the output queue in the right order
+    return number of issues found
     '''
     queue = context.output_queue
     done = 0
     todo = {}
     curr = 0
+    n_issues = 0
     while done < n_workers:
         item = await queue.get()
         if item is None:
@@ -124,9 +126,11 @@ async def process_results(context):
             s = todo.pop(curr)
             if s is not None:
                 print(s)
+                n_issues += 1
             curr += 1
     assert not todo, (curr, todo)
     assert queue.empty()
+    return n_issues
 
 def process_files(options, paths):
     '''
@@ -136,12 +140,14 @@ def process_files(options, paths):
     context.options = options
     context.input_queue = asyncio.Queue()
     context.output_queue = asyncio.Queue()
-    tasks = [queue_files(context, paths)]
-    tasks += [process_results(context)]
+    tasks = [process_results(context)]
+    tasks += [queue_files(context, paths)]
     tasks += [process_input_queue(context) for i in range(n_workers)]
     loop = asyncio.get_event_loop()
     try:
-        loop.run_until_complete(asyncio.gather(*tasks))
+        result = loop.run_until_complete(asyncio.gather(*tasks))
+        n_issues = result[0]
+        rc = 2 if n_issues > 0 else 0
     finally:
         loop.close()
     atexit.register(  # https://github.com/aio-libs/aiohttp/issues/1115
@@ -150,6 +156,7 @@ def process_files(options, paths):
         message='^unclosed transport ',
         category=ResourceWarning,
     )
+    sys.exit(rc)
 
 class VersionAction(argparse.Action):
     '''

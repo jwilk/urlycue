@@ -35,6 +35,15 @@ Options
 -k, --no-cert-check
    Don't verify server certificates.
 
+Exit status
+-----------
+
+One of the following exit values can be returned by **urlycue**:
+
+:0: No issues with the checked URLs were found.
+:1: A fatal error occurred.
+:2: At least one issue with the checked URLs was found.
+
 Example
 -------
 
