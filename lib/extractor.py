@@ -45,7 +45,7 @@ c_sub_delims = set("!$&'()*+,;=")
 c_reserved = c_gen_delims | c_sub_delims
 c_unreserved = chars('a', 'z') | chars('A', 'Z') | chars('0', '9') | set('-._/~')
 c_urly = c_reserved | c_unreserved
-c_foreign = chars('\0', '\x7f') - c_urly
+c_foreign = chars('\0', '\x7F') - c_urly
 
 regexp = r'(?<=[(])https?://(?:{C}|%[0-9a-fA-F]{{2}})+(?=[)])'.format(  # hi, Markdown!
     C=chars_to_re(c_foreign | {'(', ')'}, prefix=r'^\s')
