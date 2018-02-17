@@ -10,8 +10,7 @@ matrix:
   - python: "3.7-dev"
 install:
 - pip install aiohttp
-- pip install pydiatra
-- pip install pyflakes
+- pip install pydiatra pyflakes
 - pip install pylint
 - pip install docutils pygments
 script:
