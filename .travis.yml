@@ -15,8 +15,8 @@ install:
 - pip install pylint
 - pip install docutils pygments
 script:
-- private/run-pydiatra
-- private/run-pyflakes
+- python3 -m pydiatra .
+- python3 -m pyflakes .
 - if [[ ! "$TRAVIS_PYTHON_VERSION" =~ dev ]]; then private/run-pylint; fi
 - private/check-rst
 - make -C doc
