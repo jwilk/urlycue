@@ -22,7 +22,6 @@ script:
 - ./urlycue doc/README
 - ./urlycue test/urls
 - make install PREFIX=~/.local
-- export PATH=~/.local/bin:"$PATH"
 - urlycue --version
 - export MANPATH=~/.local/share/man MANWIDTH=80
 - man 1 urlycue | grep -A 10 -w URLYCUE
