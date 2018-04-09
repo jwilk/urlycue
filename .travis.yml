@@ -8,15 +8,17 @@ python:
 matrix:
   allow_failures:
   - python: "3.7-dev"
+before_install:
+- if [[ $TRAVIS_PYTHON_VERSION = *-dev ]]; then if_pylint=:; fi
 install:
 - pip install aiohttp
 - pip install pydiatra pyflakes
-- pip install pylint
+- $if_pylint pip install pylint
 - pip install docutils pygments
 script:
 - python3 -m pydiatra .
 - python3 -m pyflakes .
-- if [[ ! "$TRAVIS_PYTHON_VERSION" =~ dev ]]; then private/run-pylint; fi
+- $if_pylint private/run-pylint
 - private/check-rst
 - make -C doc
 - ./urlycue doc/README
