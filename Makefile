@@ -41,4 +41,6 @@ clean:
 	find . -type f -name '*.py[co]' -delete
 	find . -type d -name '__pycache__' -delete
 
+.error = GNU make is required
+
 # vim:ts=4 sts=4 sw=4 noet
