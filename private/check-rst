@@ -3,6 +3,7 @@
 # Copyright © 2016-2018 Jakub Wilk <jwilk@jwilk.net>
 # SPDX-License-Identifier: MIT
 
+set -e -u
 here=${0%/*}
 here=${here#./}
 root="$here/../"
