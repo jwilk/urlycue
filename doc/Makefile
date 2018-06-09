@@ -1,4 +1,4 @@
-# Copyright © 2014-2017 Jakub Wilk <jwilk@jwilk.net>
+# Copyright © 2014-2018 Jakub Wilk <jwilk@jwilk.net>
 # SPDX-License-Identifier: MIT
 
 export LC_ALL=C
