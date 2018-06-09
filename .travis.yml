@@ -8,6 +8,9 @@ python:
 matrix:
   allow_failures:
   - python: "3.7-dev"
+branches:
+  except:
+  - appveyor
 before_install:
 - if [[ $TRAVIS_PYTHON_VERSION = *-dev ]]; then if_pylint=:; fi
 install:
