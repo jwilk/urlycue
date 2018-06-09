@@ -3,8 +3,12 @@ urlycue (0.3.2) UNRELEASED; urgency=low
   * Improve documentation:
     + Add installation instructions.
     + Update PyPI URL.
+    + Improve typography of the manual page.
+  + Improve the build system:
+    + Add check against BSD make.
+    + Use ginstall, instead of install, if it exists.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Mon, 23 Apr 2018 11:08:30 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Sat, 09 Jun 2018 20:55:36 +0200
 
 urlycue (0.3.1) unstable; urgency=low
 
