@@ -19,8 +19,9 @@ from .io import (
     get_encoding,
     open_file,
 )
-from .version import __version__
 from . import web
+
+__version__ = '0.3.2'
 
 n_workers = 8
 
