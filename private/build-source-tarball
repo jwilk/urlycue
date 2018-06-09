@@ -3,7 +3,7 @@
 # Copyright © 2014-2018 Jakub Wilk <jwilk@jwilk.net>
 # SPDX-License-Identifier: MIT
 
-set -e
+set -e -u
 cd "${0%/*}/.."
 if [ $# -ge 2 ]
 then
