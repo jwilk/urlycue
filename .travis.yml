@@ -19,6 +19,7 @@ install:
 - $if_pylint pip install pylint
 - pip install docutils pygments
 script:
+- dpkg-parsechangelog -ldoc/changelog --all 2>&1 >/dev/null | { ! grep .; }
 - python3 -m pydiatra .
 - python3 -m pyflakes .
 - $if_pylint private/run-pylint
