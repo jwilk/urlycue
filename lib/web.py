@@ -25,7 +25,7 @@ user_agent = 'urlycue (https://github.com/jwilk/urlycue)'
 http_headers = {'User-Agent': user_agent}
 redirect_limit = 10
 
-class Status(object):
+class Status():
     '''
     HTTP response status + location
     '''
