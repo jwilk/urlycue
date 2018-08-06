@@ -3,7 +3,7 @@
 
 export LC_ALL=C
 
-rst2man = $(or $(shell which rst2man),rst2man.py)
+rst2man = $(notdir $(shell command -v rst2man || echo rst2man.py))
 exe = urlycue
 
 .PHONY: all
