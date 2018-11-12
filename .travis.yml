@@ -17,10 +17,10 @@ branches:
 before_install:
 - if [[ $TRAVIS_PYTHON_VERSION = *-dev ]]; then if_pylint=:; fi
 install:
-- pip install aiohttp
-- pip install pydiatra pyflakes
-- $if_pylint pip install pylint
-- pip install docutils pygments
+- python3 -m pip install aiohttp
+- python3 -m pip install pydiatra pyflakes
+- $if_pylint python3 -m pip install pylint
+- python3 -m pip install docutils pygments
 script:
 - dpkg-parsechangelog -ldoc/changelog --all 2>&1 >/dev/null | { ! grep .; }
 - python3 -m pydiatra .
