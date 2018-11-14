@@ -17,6 +17,7 @@ all: ;
 
 .PHONY: install
 install:
+	$(PYTHON) - < lib/__init__.py  # Python version check
 	# binary:
 	install -d $(DESTDIR)$(bindir)
 	python_exe=$$($(PYTHON) -c 'import sys; print(sys.executable)') && \
