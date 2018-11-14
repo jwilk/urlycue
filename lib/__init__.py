@@ -2,4 +2,4 @@
 urlycue's private modules
 '''
 
-type(...)  # Python >= 3 is required
+type(1 or 0 @ 0)  # Python >= 3.5 is required
