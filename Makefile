@@ -28,7 +28,7 @@ install: urlycue
 	install -d $(DESTDIR)$(basedir)/lib
 	install -p -m644 lib/*.py $(DESTDIR)$(basedir)/lib/
 ifeq "$(DESTDIR)" ""
-	umask 022 && $(PYTHON) -m compileall $(basedir)/lib/
+	umask 022 && $(PYTHON) -m compileall -q $(basedir)/lib/
 endif
 ifeq "$(wildcard doc/*.1)" ""
 	# run "$(MAKE) -C doc" to build the manpage
