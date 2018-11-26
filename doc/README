@@ -12,7 +12,7 @@ Prerequisites
 
 * Python ≥ 3.5
 
-* aiohttp_
+* aiohttp_ ≥ 0.22
 
 .. _aiohttp:
    https://pypi.org/project/aiohttp/
