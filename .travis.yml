@@ -3,6 +3,7 @@ language: python
 matrix:
   include:
   - python: "3.5"
+    env: AIOHTTP=0.22.0
   - python: "3.6"
   - python: "3.7"
     dist: xenial
@@ -12,9 +13,10 @@ branches:
   except:
   - appveyor
 before_install:
+- aiohttp=aiohttp${AIOHTTP+==$AIOHTTP}
 - if [[ $TRAVIS_PYTHON_VERSION = *-dev ]]; then if_pylint=:; fi
 install:
-- python3 -m pip install aiohttp
+- python3 -m pip install $aiohttp
 - python3 -m pip install pydiatra pyflakes
 - if [[ $TRAVIS_PYTHON_VERSION = *-dev ]]; then
     printf '\n\n    CONSTANT = ignore\n' >> $VIRTUAL_ENV/lib/python*/site-packages/pyflakes/checker.py;
