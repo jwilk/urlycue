@@ -25,9 +25,9 @@ Options
 -------
 
 -h, --help
-   Show the help message and exit.
+   Show help message and exit.
 --version
-   Show the program's version information and exit.
+   Show version information and exit.
 --list
    List all extracted URLs without checking anything.
 -v, --verbose
