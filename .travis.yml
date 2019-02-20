@@ -1,6 +1,6 @@
 dist: trusty
 language: python
-matrix:
+jobs:
   include:
   - python: "3.5"
     env: AIOHTTP=0.22.0
