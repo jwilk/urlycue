@@ -18,9 +18,6 @@ before_install:
 install:
 - python3 -m pip install $aiohttp
 - python3 -m pip install pydiatra pyflakes
-- if [[ $TRAVIS_PYTHON_VERSION = *-dev ]]; then
-    printf '\n\n    CONSTANT = ignore\n' >> $VIRTUAL_ENV/lib/python*/site-packages/pyflakes/checker.py;
-  fi
 - $if_pylint python3 -m pip install pylint
 - python3 -m pip install docutils pygments
 script:
