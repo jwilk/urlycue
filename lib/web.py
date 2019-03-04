@@ -109,7 +109,7 @@ async def check_url(url, check_cert=True):
         conn_opts = dict(ssl=tls_context)
     else:
         conn_opts = dict(ssl_context=tls_context)
-    connector = aiohttp.connector.TCPConnector(**conn_opts)
+    connector = aiohttp.connector.TCPConnector(**conn_opts)  # pylint: disable=unexpected-keyword-arg
     try:
         async with aiohttp.client.ClientSession(connector=connector, headers=http_headers) as session:
             status = await _check_url(session, url)
