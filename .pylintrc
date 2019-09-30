@@ -9,6 +9,7 @@ disable =
     invalid-name,
     locally-disabled,
     logging-format-interpolation,
+    no-else-continue,
     no-else-return,
     redefined-variable-type,
     too-few-public-methods,
