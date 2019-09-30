@@ -14,11 +14,11 @@ import sys
 
 def error(message):
     try:
-        import argparse
+        import argparse  # pylint: disable=import-outside-toplevel
         ap = argparse.ArgumentParser()
         prog = ap.prog
     except ImportError:
-        import optparse  # pylint: disable=deprecated-module
+        import optparse  # pylint: disable=deprecated-module,import-outside-toplevel
         ap = optparse.OptionParser()
         prog = ap.get_prog_name()
     message = ''.join((prog, ': error: ', message, '\n'))
