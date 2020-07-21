@@ -25,8 +25,7 @@ script:
 - $if_pylint private/run-pylint
 - private/check-rst
 - make -C doc
-- ./urlycue doc/README
-- ./urlycue test/urls
+- make test network=1
 - make install PREFIX=~/.local
 - cd /
 - urlycue --version
