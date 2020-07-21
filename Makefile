@@ -39,6 +39,17 @@ else
 	install -p -m644 doc/$(<).1 $(DESTDIR)$(mandir)/man1/
 endif
 
+network =
+maybe-test-net = $(and $(network),URLYCUE_TEST_NETWORK=1)
+
+.PHONY: test
+test: urlycue
+	$(maybe-test-net) prove -v
+
+.PHONY: test-installed
+test-installed: $(or $(shell command -v urlycue;),$(bindir)/urlycue)
+	$(maybe-test-net) URLYCUE_TEST_TARGET=urlycue prove -v
+
 .PHONY: clean
 clean:
 	find . -type f -name '*.py[co]' -delete
