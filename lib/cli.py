@@ -124,10 +124,8 @@ def process_files(options, paths):
     tasks += [process_results(context)]
     tasks += [process_input_queue(context) for i in range(n_workers)]
     loop = asyncio.get_event_loop()
-    try:
-        loop.run_until_complete(asyncio.gather(*tasks))
-    finally:
-        loop.close()
+    loop.run_until_complete(asyncio.gather(*tasks))
+    loop.close()
     atexit.register(  # https://github.com/aio-libs/aiohttp/issues/1115
         warnings.filterwarnings,
         action='ignore',
