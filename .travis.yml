@@ -15,6 +15,7 @@ branches:
 before_install:
 - aiohttp=aiohttp${AIOHTTP+==$AIOHTTP}
 - if [[ $TRAVIS_PYTHON_VERSION = *-dev ]]; then if_pylint=:; fi
+- if [[ $TRAVIS_PYTHON_VERSION = 3.10-* ]]; then pip install --upgrade --no-deps --force-reinstall --no-binary ':all:' nose; fi
 install:
 - python3 -m pip install $aiohttp
 - python3 -m pip install pydiatra pyflakes
