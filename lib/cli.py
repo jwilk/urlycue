@@ -6,7 +6,6 @@ the command-line interface
 '''
 
 import argparse
-import asyncio
 import atexit
 import io
 import logging
@@ -14,6 +13,7 @@ import sys
 import types
 import warnings
 
+from .compat import asyncio
 from .extractor import extract_urls
 from .io import (
     get_encoding,
@@ -112,7 +112,7 @@ async def process_results(context):
     assert not todo, (curr, todo)
     assert queue.empty()
 
-def process_files(options, paths):
+async def async_process_files(options, paths):
     '''
     check all files
     '''
@@ -123,9 +123,13 @@ def process_files(options, paths):
     tasks = [queue_files(context, paths)]
     tasks += [process_results(context)]
     tasks += [process_input_queue(context) for i in range(n_workers)]
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(asyncio.gather(*tasks))
-    loop.close()
+    await asyncio.gather(*tasks)
+
+def process_files(options, paths):
+    '''
+    check all files
+    '''
+    asyncio.run(async_process_files(options, paths))
     atexit.register(  # https://github.com/aio-libs/aiohttp/issues/1115
         warnings.filterwarnings,
         action='ignore',
