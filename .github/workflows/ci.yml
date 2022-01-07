@@ -1,0 +1,88 @@
+name: CI
+on:
+  push:
+    branches-ignore:
+    - appveyor
+  pull_request:
+jobs:
+  main:
+    strategy:
+      matrix:
+        include:
+        - python: '3.5'
+          os: ubuntu-18.04
+          aiohttp: aiohttp==0.22.1
+        - python: '3.6'
+          os: ubuntu-20.04
+        - python: '3.7'
+          os: ubuntu-20.04
+        - python: '3.8'
+          os: ubuntu-20.04
+        - python: '3.9'
+          os: ubuntu-20.04
+        - python: '3.10'
+          os: ubuntu-20.04
+        - python: '3.11-dev'
+          os: ubuntu-20.04
+          broken: broken
+    runs-on: ${{matrix.os}}
+    continue-on-error: ${{(matrix.broken && true) || false}}
+    steps:
+    - uses: actions/checkout@v2
+    - name: set up Python ${{matrix.python}}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{matrix.python}}
+    - name: run pydiatra
+      run: |
+        python3 -m pip install pydiatra
+        python3 -m pydiatra .
+    - name: run pyflakes
+      run: |
+        python3 -m pip install pyflakes
+        python3 -m pyflakes .
+    - name: install aiohttp
+      run: |
+        python3 -m pip install ${{matrix.aiohttp || 'aiohttp'}}
+    - name: run pylint
+      run: |
+        python3 -m pip install pylint
+        private/run-pylint
+    - name: check changelog
+      run: |
+        dpkg-parsechangelog -ldoc/changelog --all 2>&1 >/dev/null | { ! grep .; }
+    - name: check reST syntax
+      run: |
+        python3 -m pip install docutils pygments
+        private/check-rst
+    - name: build the man page
+      run: |
+        make -C doc
+    - name: install nose
+      run: |
+        # work-around for <https://github.com/nose-devs/nose/issues/1115>:
+        pip install 'setuptools<58'
+        # work-around for <https://github.com/nose-devs/nose/issues/1099>:
+        pip install --no-binary ':all:' nose
+        # work-around for <https://github.com/nose-devs/nose/issues/1116>:
+        sed -i -e 's/ from unittest import _TextTestResult$/ from unittest import TextTestResult as _TextTestResult/' ${{env.pythonLocation}}/lib/python*/site-packages/nose/result.py
+    - name: run tests
+      run: |
+        make test network=1
+    - name: install
+      run: |
+        make install PREFIX=~/.local
+    - name: check whether the executable was installed correctly
+      run: |
+        cd /
+        urlycue --version
+        urlycue --help
+    - name: check whether the man page was installed correctly
+      env:
+        MANPATH: /home/runner/.local/share/man
+        MANWIDTH: 80
+      run: |
+        cd /
+        man 1 urlycue | grep -A 10 -w URLYCUE
+
+# vim:ts=2 sts=2 sw=2 et
