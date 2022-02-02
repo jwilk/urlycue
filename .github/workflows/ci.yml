@@ -58,14 +58,6 @@ jobs:
     - name: build the man page
       run: |
         make -C doc
-    - name: install nose
-      run: |
-        # work-around for <https://github.com/nose-devs/nose/issues/1115>:
-        pip install 'setuptools<58'
-        # work-around for <https://github.com/nose-devs/nose/issues/1099>:
-        pip install --no-binary ':all:' nose
-        # work-around for <https://github.com/nose-devs/nose/issues/1116>:
-        sed -i -e 's/ from unittest import _TextTestResult$/ from unittest import TextTestResult as _TextTestResult/' ${{env.pythonLocation}}/lib/python*/site-packages/nose/result.py
     - name: run tests
       run: |
         make test network=1
