@@ -30,7 +30,7 @@ def require_python(*version):
         message = 'Python >= %s is required' % version_str
         error(message)
 
-require_python(3, 5)
+require_python(3, 6)
 
 # ----------------------------------------
 

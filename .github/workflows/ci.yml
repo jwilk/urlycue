@@ -7,11 +7,9 @@ jobs:
     strategy:
       matrix:
         include:
-        - python: '3.5'
+        - python: '3.6'
           os: ubuntu-18.04
           aiohttp: aiohttp==0.22.1
-        - python: '3.6'
-          os: ubuntu-20.04
         - python: '3.7'
           os: ubuntu-20.04
         - python: '3.8'
@@ -78,7 +76,7 @@ jobs:
     strategy:
       matrix:
         include:
-        - python: '3.5'
+        - python: '3.6'
           os: windows-2019
           aiohttp: aiohttp==0.22.1
         - python: '3.10'
