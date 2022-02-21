@@ -11,6 +11,7 @@ disable =
     invalid-name,
     locally-disabled,
     logging-format-interpolation,
+    logging-fstring-interpolation,
     no-else-continue,
     no-else-return,
     redefined-variable-type,
