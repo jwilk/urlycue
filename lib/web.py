@@ -77,7 +77,7 @@ async def _check_url(session, url):
                     redirect_status = status
                 else:
                     redirect_status = None
-                logger.debug('redirect {} -> {}'.format(url, location))
+                logger.debug(f'redirect {url} -> {location}')
                 url = location
                 continue
             if status.ok and isinstance(redirect_status, Status):
@@ -93,13 +93,13 @@ async def check_url(url, check_cert=True):
     return an exception or Status object
     '''
     logger = logging.getLogger('urlycue')
-    logger.debug('start {}'.format(url))
+    logger.debug(f'start {url}')
     try:
         cached = _url_cache[url]
     except KeyError:
         pass
     else:
-        logger.debug('cached {}'.format(url))
+        logger.debug(f'cached {url}')
         return cached
     tls_context = ssl.create_default_context()
     if not check_cert:
@@ -127,7 +127,7 @@ async def check_url(url, check_cert=True):
     except misc_aiohttp_errors as exc:  # pylint: disable=catching-non-exception
         status = exc
     _url_cache[url] = status
-    logger.debug('done {}'.format(url))
+    logger.debug(f'done {url}')
     return status
 
 __all__ = [

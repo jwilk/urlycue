@@ -18,10 +18,8 @@ def chars_to_re(cs, prefix=''):
     '''
     build regular expression for set of characters
     '''
-    return '[{prefix}{chars}]'.format(
-        prefix=prefix,
-        chars=''.join(re.escape(c) for c in sorted(cs))
-    )
+    r_cs = str.join('', (re.escape(c) for c in sorted(cs)))
+    return f'[{prefix}{r_cs}]'
 
 c_gen_delims = set(":/?#[]@")
 c_sub_delims = set("!$&'()*+,;=")
@@ -30,10 +28,11 @@ c_unreserved = chars('a', 'z') | chars('A', 'Z') | chars('0', '9') | set('-._/~'
 c_urly = c_reserved | c_unreserved
 c_foreign = chars('\0', '\x7F') - c_urly
 
-regexp = r'(?<=[(])https?://(?:{C}|%[0-9a-fA-F]{{2}})+(?=[)])'.format(  # hi, Markdown!
-    C=chars_to_re(c_foreign | {'(', ')'}, prefix=r'^\s')
-) + r'|\bhttps?://(?:{C}|%[0-9a-fA-F]{{2}})+'.format(
-    C=chars_to_re(c_foreign, prefix=r'^\s')
+r_foreign_par = chars_to_re(c_foreign | {'(', ')'}, prefix=r'^\s')
+r_foreign = chars_to_re(c_foreign, prefix=r'^\s')
+regexp = (
+    fr'(?<=[(])https?://(?:{r_foreign_par}|%[0-9a-fA-F]{{2}})+(?=[)])'  # hi, Markdown!
+    fr'|\bhttps?://(?:{r_foreign}|%[0-9a-fA-F]{{2}})+'
 )
 regexp = re.compile(regexp)
 

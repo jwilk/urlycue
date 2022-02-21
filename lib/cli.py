@@ -43,7 +43,7 @@ async def process_url(options, location, url):
         if status.location is not None:
             what += ' -> ' + status.location
     (path, n) = location
-    return '{path}:{n}: [{status}] {what}'.format(path=path, n=n, status=status, what=what)
+    return f'{path}:{n}: [{status}] {what}'
 
 async def process_input_queue(context):
     '''
@@ -151,9 +151,9 @@ class VersionAction(argparse.Action):
         )
 
     def __call__(self, parser, namespace, values, option_string=None):
-        print('{prog} {0}'.format(__version__, prog=parser.prog))
+        print(f'{parser.prog} {__version__}')
         print('+ Python {0}.{1}.{2}'.format(*sys.version_info))
-        print('+ aiohttp {0}'.format(web.aiohttp.__version__))
+        print(f'+ aiohttp {web.aiohttp.__version__}')
         parser.exit()
 
 def setup_logging(debug=False):
