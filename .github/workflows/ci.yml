@@ -20,10 +20,6 @@ jobs:
           os: ubuntu-20.04
         - python: '3.11-dev'
           os: ubuntu-20.04
-          broken: broken
-          # https://github.com/aio-libs/aiohttp/issues/6600 "aiohttp/_websocket.c:198:12: fatal error: longintrepr.h: No such file or directory"
-          # https://github.com/aio-libs/frozenlist/issues/305 "frozenlist/_frozenlist.c:432:62: error: dereferencing pointer to incomplete type ‘PyFrameObject’ {aka ‘struct _frame’}"
-          # https://github.com/aio-libs/yarl/issues/706 "yarl/_quoting_c.c:198:12: fatal error: longintrepr.h: No such file or directory"
     runs-on: ${{matrix.os}}
     continue-on-error: ${{(matrix.broken && true) || false}}
     steps:
