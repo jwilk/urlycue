@@ -17,9 +17,9 @@ jobs:
         - python: '3.9'
           os: ubuntu-20.04
         - python: '3.10'
-          os: ubuntu-20.04
+          os: ubuntu-22.04
         - python: '3.11'
-          os: ubuntu-20.04
+          os: ubuntu-22.04
     runs-on: ${{matrix.os}}
     continue-on-error: ${{(matrix.broken && true) || false}}
     steps:
