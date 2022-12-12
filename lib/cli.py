@@ -7,7 +7,6 @@ the command-line interface
 
 import argparse
 import atexit
-import io
 import logging
 import sys
 import types
@@ -182,8 +181,8 @@ def main():
         help='file to check (default: stdin)')
     options = ap.parse_args()
     options.encoding = encoding = get_encoding()
-    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding, line_buffering=True)
-    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding, line_buffering=True)
+    sys.stdout.reconfigure(encoding=encoding, line_buffering=True)
+    sys.stderr.reconfigure(encoding=encoding, line_buffering=True)
     paths = options.files
     del options.files
     setup_logging(debug=options.debug)
