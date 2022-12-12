@@ -9,7 +9,7 @@ jobs:
         include:
         - python: '3.7'
           os: ubuntu-20.04
-          aiohttp: aiohttp==2.3.3
+          aiohttp: aiohttp==2.3.3 async_timeout==3.0.1
         - python: '3.8'
           os: ubuntu-20.04
         - python: '3.9'
@@ -79,7 +79,7 @@ jobs:
         include:
         - python: '3.7'
           os: windows-2019
-          aiohttp: aiohttp==2.3.3
+          aiohttp: aiohttp==2.3.3 async_timeout==3.0.1
         - python: '3.10'
           os: windows-2019
     runs-on: ${{matrix.os}}
