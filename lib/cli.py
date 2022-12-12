@@ -15,7 +15,6 @@ import warnings
 from .compat import asyncio
 from .extractor import extract_urls
 from .io import (
-    get_encoding,
     open_file,
 )
 from . import web
@@ -60,12 +59,12 @@ async def process_input_queue(context):
         await output_queue.put((j, s))
     await output_queue.put(None)
 
-def extract_urls_from_file(context, path):
+def extract_urls_from_file(path):
     '''
     extract URLs from file
     yield ((path, n), url) tuples
     '''
-    encoding = context.options.encoding
+    encoding = sys.stdout.encoding
     file = open_file(path, encoding=encoding, errors='replace')
     with file:
         for n, line in enumerate(file, 1):
@@ -80,7 +79,7 @@ async def queue_files(context, paths):
     queue = context.input_queue
     j = 0
     for path in paths:
-        for (location, url) in extract_urls_from_file(context, path):
+        for (location, url) in extract_urls_from_file(path):
             await queue.put((j, location, url))
             j += 1
     for i in range(n_workers):
@@ -180,9 +179,8 @@ def main():
     ap.add_argument('files', metavar='FILE', nargs='*', default=['-'],
         help='file to check (default: stdin)')
     options = ap.parse_args()
-    options.encoding = encoding = get_encoding()
-    sys.stdout.reconfigure(encoding=encoding, line_buffering=True)
-    sys.stderr.reconfigure(encoding=encoding, line_buffering=True)
+    sys.stdout.reconfigure(line_buffering=True)
+    sys.stderr.reconfigure(line_buffering=True)
     paths = options.files
     del options.files
     setup_logging(debug=options.debug)
