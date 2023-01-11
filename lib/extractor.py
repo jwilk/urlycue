@@ -85,7 +85,7 @@ def extract_urls(s):
     '''
     bad_netloc_chars = {':', '$'}
     bad_netloc_re = re.compile(
-        '|'.join(re.escape(ch) for ch in bad_netloc_chars)
+        str.join('|', (re.escape(ch) for ch in bad_netloc_chars))
     )
     for match in regexp.finditer(s):
         l, _ = match.span()

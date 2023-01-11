@@ -21,7 +21,7 @@ def error(message):
         import optparse  # pylint: disable=deprecated-module,import-outside-toplevel
         ap = optparse.OptionParser()
         prog = ap.get_prog_name()
-    message = ''.join((prog, ': error: ', message, '\n'))
+    message = str.join('', (prog, ': error: ', message, '\n'))
     ap.exit(1, message)
 
 def require_python(*version):
