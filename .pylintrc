@@ -16,6 +16,7 @@ disable =
     no-else-return,
     redefined-variable-type,
     too-few-public-methods,
+    use-dict-literal,
     use-sequence-for-iteration,
 
 [REPORTS]
