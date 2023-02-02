@@ -26,7 +26,7 @@ def error(message):
 
 def require_python(*version):
     if sys.version_info < version:
-        version_str = '.'.join(map(str, version))
+        version_str = str.join('.', map(str, version))
         message = 'Python >= %s is required' % version_str
         error(message)
 
