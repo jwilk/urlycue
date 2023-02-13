@@ -6,13 +6,13 @@ the command-line interface
 '''
 
 import argparse
+import asyncio
 import atexit
 import logging
 import sys
 import types
 import warnings
 
-from .compat import asyncio
 from .extractor import extract_urls
 from .io import (
     open_file,
