@@ -1,8 +1,21 @@
 urlycue (0.3.3) UNRELEASED; urgency=low
 
-  * 
+  * Fix TCPConnection “ssl_context is deprecated” warning.
+  * Improve error handling.
+  * Add test suite.
+  * Rephrase descriptions of --help, --version.
+  * Improve README:
+    + Remove near-useless syntax highlighting.
+    + Document aiohttp version requirements.
+  * Improve the build system:
+    + Add check against BSD make. (Only GNU make is supported.)
+    + Don't require GNU install(1).
+    + Check Python version on install.
+    + Byte-compile Python code on install (if DESTDIR is not set).
+    + Use install(1) to install the executable.
+  * Drop support for Python < 3.6.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Sat, 09 Jun 2018 22:24:22 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Mon, 13 Feb 2023 12:41:27 +0100
 
 urlycue (0.3.2) unstable; urgency=low
 
