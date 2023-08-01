@@ -4,7 +4,7 @@ Add test suite.
 
 Implement `HTTP Strict Transport Security`__
 
-__ https://tools.ietf.org/html/rfc6797
+__ https://www.rfc-editor.org/rfc/rfc6797.html
 
 Implement `Upgrade Insecure Requests`__
 
