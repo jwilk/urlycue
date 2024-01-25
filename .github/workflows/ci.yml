@@ -18,12 +18,9 @@ jobs:
           os: ubuntu-22.04
         - python: '3.11'
           os: ubuntu-22.04
-        - python: '3.12-dev'
+        - python: '3.12'
           os: ubuntu-22.04
     runs-on: ${{matrix.os}}
-    continue-on-error:
-      ${{ endsWith(matrix.python, '-dev') }}
-      # FIXME: aiohttp/_websocket.c:3042:53: error: ‘PyLongObject’ {aka ‘struct _longobject’} has no member named ‘ob_digit’
     steps:
     - uses: actions/checkout@v3
     - name: set up Python ${{matrix.python}}
