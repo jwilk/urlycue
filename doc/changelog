@@ -13,9 +13,9 @@ urlycue (0.3.3) UNRELEASED; urgency=low
     + Check Python version on install.
     + Byte-compile Python code on install (if DESTDIR is not set).
     + Use install(1) to install the executable.
-  * Drop support for Python < 3.6.
+  * Drop support for Python < 3.7.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Mon, 13 Feb 2023 12:41:27 +0100
+ -- Jakub Wilk <jwilk@jwilk.net>  Wed, 31 Jan 2024 11:31:45 +0100
 
 urlycue (0.3.2) unstable; urgency=low
 
