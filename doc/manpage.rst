@@ -8,7 +8,7 @@ command-line URL checker
 
 :manual section: 1
 :version: urlycue 0.3.3
-:date: 2018-06-09
+:date: 2024-01-31
 
 Synopsis
 --------
