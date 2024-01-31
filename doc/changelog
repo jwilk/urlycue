@@ -1,4 +1,4 @@
-urlycue (0.3.3) UNRELEASED; urgency=low
+urlycue (0.3.3) unstable; urgency=low
 
   * Fix TCPConnection “ssl_context is deprecated” warning.
   * Improve error handling.
@@ -15,7 +15,7 @@ urlycue (0.3.3) UNRELEASED; urgency=low
     + Use install(1) to install the executable.
   * Drop support for Python < 3.7.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Wed, 31 Jan 2024 11:31:45 +0100
+ -- Jakub Wilk <jwilk@jwilk.net>  Wed, 31 Jan 2024 11:51:40 +0100
 
 urlycue (0.3.2) unstable; urgency=low
 
