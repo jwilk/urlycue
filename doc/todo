@@ -6,6 +6,10 @@ Implement `HTTP Strict Transport Security`__
 
 __ https://www.rfc-editor.org/rfc/rfc6797.html
 
+Use HSTS Preload List::
+
+   curl 'https://chromium.googlesource.com/chromium/src/+/refs/heads/main/net/http/transport_security_state_static.json?format=TEXT' | base64 -d
+
 Implement `Upgrade Insecure Requests`__
 
 __ https://www.w3.org/TR/upgrade-insecure-requests/
