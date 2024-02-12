@@ -19,7 +19,7 @@ from .io import (
 )
 from . import web
 
-__version__ = '0.3.3'
+__version__ = '0.3.4'
 
 n_workers = 8
 
