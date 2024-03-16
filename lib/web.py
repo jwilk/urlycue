@@ -46,7 +46,8 @@ class Status():
         self.ok = self.code == http.HTTPStatus.OK
 
     def __str__(self):
-        return '{hs} {hs.phrase}'.format(hs=self.code)  # pylint: disable=missing-format-attribute
+        hs = self.code
+        return f'{hs} {hs.phrase}'  # pylint: disable=missing-format-attribute
 
 status_ok = Status(code=http.HTTPStatus.OK)
 assert status_ok.ok
