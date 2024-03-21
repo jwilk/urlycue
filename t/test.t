@@ -9,7 +9,7 @@ base="${0%/*}/.."
 prog=${URLYCUE_TEST_TARGET:-"$base/urlycue"}
 if [[ -z ${URLYCUE_TEST_NETWORK-} ]]
 then
-    echo 'URLYCUE_TEST_NETWORK is not set' >&2
+    echo 'set URLYCUE_TEST_NETWORK=1 to opt in to network testing' >&2
     printf 'not ok %d\n' {1..4}
     exit 1
 fi
