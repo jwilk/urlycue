@@ -154,7 +154,7 @@ class VersionAction(argparse.Action):
         print(f'+ aiohttp {web.aiohttp.__version__}')
         parser.exit()
 
-def setup_logging(debug=False):
+def setup_logging(*, debug=False):
     '''
     logging setup
     '''

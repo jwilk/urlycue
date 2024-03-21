@@ -88,7 +88,7 @@ async def _check_url(session, url):
 
 _url_cache = {}
 
-async def check_url(url, check_cert=True):
+async def check_url(url, *, check_cert=True):
     '''
     check the URL
     return an exception or Status object
