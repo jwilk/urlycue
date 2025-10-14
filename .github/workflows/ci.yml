@@ -70,7 +70,7 @@ jobs:
         MANWIDTH: 80
       run: |
         cd /
-        man 1 urlycue | grep -A 10 -w URLYCUE
+        man 1 urlycue | grep -A 10 -iw URLYCUE
     - name: run post-install tests
       run: |
         rm urlycue
