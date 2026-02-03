@@ -171,6 +171,7 @@ def main():
     run the program
     '''
     ap = argparse.ArgumentParser(description='URL checker')
+    ap.color = False
     ap.add_argument('--version', action=VersionAction)
     ap.add_argument('-l', '--list', action='store_true', help='list all matching URLs')
     ap.add_argument('-v', '--verbose', action='store_true', help='print also URLs without issues')
