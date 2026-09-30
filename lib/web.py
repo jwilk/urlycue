@@ -131,8 +131,8 @@ async def check_url(url, *, check_cert=True):
 
 __all__ = [
     'Status',
-    'status_ok',
     'check_url',
+    'status_ok',
 ]
 
 # vim:ts=4 sts=4 sw=4 et
