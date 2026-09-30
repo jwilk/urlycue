@@ -1,4 +1,4 @@
-# Copyright © 2016-2025 Jakub Wilk <jwilk@jwilk.net>
+# Copyright © 2016-2026 Jakub Wilk <jwilk@jwilk.net>
 # SPDX-License-Identifier: MIT
 
 '''
